@@ -1,4 +1,4 @@
-export const getUser = (event: any) => {
+export const getUser = async (event: any) => {
   console.log('get request', event);
-  return { id: '001' };
+  return { id: '001', name: 'user1' };
 };

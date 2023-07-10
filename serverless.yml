@@ -55,6 +55,12 @@ custom:
                 Action:
                   - '*'
                 Resource: '*'
+      mappingTemplates:
+        - type: Query
+          request: false
+          response: false
+          dataSource: getUser
+          field: getUser
 
     - name: ${self:provider.stackName}-product
       schema: subgraph-product/schema/product.graphql
@@ -62,6 +68,22 @@ custom:
       additionalAuthenticationProviders:
         - authenticationType: AWS_IAM
       xrayEnabled: true
+      dataSources:
+        - type: AWS_LAMBDA
+          name: getProduct
+          config:
+            functionName: getProductHandler
+            iamRoleStatements:
+              - Effect: 'Allow'
+                Action:
+                  - '*'
+                Resource: '*'
+      mappingTemplates:
+        - type: Query
+          request: false
+          response: false
+          dataSource: getProduct
+          field: getProduct
 
 functions:
   - ${file(subgraph-user/resources/lambdas.yml)}
