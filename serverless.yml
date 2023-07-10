@@ -1,0 +1,68 @@
+service: ${opt:stage}-bff-merged-api
+
+plugins:
+  - serverless-appsync-plugin
+  - serverless-pseudo-parameters
+  - serverless-esbuild
+
+useDotenv: true
+variablesResolutionMode: 20210326
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: ${opt:region}
+  stackName: ${self:service}
+  stage: ${opt:stage}
+  tags:
+    COMPONENT_NAME: bff
+    PART_NAME: api
+    STAGE: ${opt:stage}
+    service: bff-merged-api
+    env: ${opt:stage}
+  stackTags: ${self:provider.tags}
+
+  iam:
+    role:
+      statements:
+        - Effect: 'Allow'
+          Action:
+            - '*'
+          Resource: 'arn:aws:lambda:*'
+
+  tracing:
+    lambda: true
+
+package:
+  individually: true
+
+custom:
+  appSync:
+    - name: ${self:provider.stackName}-user
+      schema: subgraph-user/schema/user.graphql
+      authenticationType: API_KEY
+      additionalAuthenticationProviders:
+        - authenticationType: AWS_IAM
+      xrayEnabled: true
+      dataSources:
+        - type: AWS_LAMBDA
+          name: getUser
+          config:
+            functionName: getUserHandler
+            iamRoleStatements:
+              - Effect: 'Allow'
+                Action:
+                  - '*'
+                Resource: '*'
+
+    - name: ${self:provider.stackName}-product
+      schema: subgraph-product/schema/product.graphql
+      authenticationType: API_KEY
+      additionalAuthenticationProviders:
+        - authenticationType: AWS_IAM
+      xrayEnabled: true
+
+functions:
+  - ${file(subgraph-user/resources/lambdas.yml)}
+  - ${file(subgraph-product/resources/lambdas.yml)}

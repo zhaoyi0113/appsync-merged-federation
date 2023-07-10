@@ -1,0 +1,5 @@
+getUserHandler:
+  handler: subgraph-user/src/index.getUser
+  name: ${self:provider.stackName}-getUser
+  timeout: 30
+  tracing: true

@@ -1,0 +1,19 @@
+{
+  "name": "appsync-merged-federation",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:zhaoyi0113/appsync-merged-federation.git",
+  "author": "Joey Zhao <zhaoyi0113@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc --build tsconfig.json"
+  },
+  "devDependencies": {
+    "esbuild": "^0.18.11",
+    "esbuild-plugin-tsc": "^0.4.0",
+    "serverless": "^3.33.0",
+    "serverless-appsync-plugin": "^1.14.0",
+    "serverless-esbuild": "^1.45.1",
+    "serverless-pseudo-parameters": "^2.6.1"
+  }
+}

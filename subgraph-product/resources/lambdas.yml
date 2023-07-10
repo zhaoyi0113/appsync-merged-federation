@@ -1,0 +1,5 @@
+getProductHandler:
+  handler: subgraph-product/src/index.getProduct
+  name: ${self:provider.stackName}-getProduct
+  timeout: 30
+  tracing: true
