@@ -1,0 +1,44 @@
+Resources:
+  mergedApi:
+    Type: AWS::AppSync::GraphQLApi
+    Properties:
+      Name: ${self:service}-merged-api-parent
+      ApiType: MERGED
+      AuthenticationType: API_KEY
+      AdditionalAuthenticationProviders:
+        - AuthenticationType: AWS_IAM
+      XrayEnabled: true
+      MergedApiExecutionRoleArn: !GetAtt mergedApiRole.Arn
+
+  # userSubgraph:
+  #   Type: AWS::AppSync::SourceApiAssociation
+  #   Properties:
+  #     MergedApiIdentifier: 'b3firucswvgp3m7aom6ibmgop4' # !GetAtt mergedApi.ApiId
+  #     SourceApiIdentifier: 'xzu2xhjtlzdplfpj2qghtyveue' # !GetAtt DevbffmergedapiuserGraphQlApi.ApiId
+
+  # productSubgraph:
+  #   Type: AWS::AppSync::SourceApiAssociation
+  #   Properties:
+  #     MergedApiIdentifier: !GetAtt mergedApi.ApiId
+  #     SourceApiIdentifier: !GetAtt DevbffmergedapiproductGraphQlApi.ApiId
+
+  mergedApiRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - appsync.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: ${self:provider.stackName}
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - '*'
+                Resource: '*'

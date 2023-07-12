@@ -3,3 +3,9 @@ getUserHandler:
   name: ${self:provider.stackName}-getUser
   timeout: 30
   tracing: true
+
+getUserPurchasesHandler:
+  handler: subgraph-user/src/index.getUserPurchases
+  name: ${self:provider.stackName}-getUserPurchases
+  timeout: 30
+  tracing: true

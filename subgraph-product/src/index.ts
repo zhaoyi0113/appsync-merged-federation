@@ -1,4 +1,4 @@
-export const getProduct = () => {
+export const getProduct = async (event: any) => {
   console.log('get request', event);
-  return { id: '001' };
+  return { id: '001', name: 'product-001', inStock: true };
 };

@@ -55,12 +55,27 @@ custom:
                 Action:
                   - '*'
                 Resource: '*'
+        - type: AWS_LAMBDA
+          name: purchases
+          config:
+            functionName: getUserPurchasesHandler
+            iamRoleStatements:
+              - Effect: 'Allow'
+                Action:
+                  - '*'
+                Resource: '*'
       mappingTemplates:
         - type: Query
           request: false
           response: false
           dataSource: getUser
           field: getUser
+        - type: User
+          request: false
+          response: false
+          dataSource: purchases
+          field: purchases
+        
 
     - name: ${self:provider.stackName}-product
       schema: subgraph-product/schema/product.graphql
@@ -88,3 +103,6 @@ custom:
 functions:
   - ${file(subgraph-user/resources/lambdas.yml)}
   - ${file(subgraph-product/resources/lambdas.yml)}
+
+resources:
+  - ${file(merged/resources/merged.yml)}
