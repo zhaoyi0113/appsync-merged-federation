@@ -1,9 +1,9 @@
-export const getUser = async (event: any) => {
-  console.log('get request', event);
-  return { id: '001', name: 'user1', purchases: [{ id: '001', name: 'product-001', dateTime: new Date() }] };
+export const getUser = async (event: any, context: any) => {
+  console.log('get request', event, context);
+  return { id: 'user-001', name: 'user1' };
 };
 
-export const getUserPurchasesHandler = async (event: any) => {
+export const getUserPurchasesDateTimeHandler = async (event: any) => {
   console.log('get request', event);
-  return [{ id: '001', name: 'product-001', dateTime: new Date() }];
+  return new Date();
 };

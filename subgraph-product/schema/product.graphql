@@ -7,3 +7,7 @@ type Product {
   name: String!
   inStock: Boolean
 }
+
+type User {
+  purchases: [Product]
+}

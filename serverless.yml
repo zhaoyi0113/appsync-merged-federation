@@ -56,9 +56,9 @@ custom:
                   - '*'
                 Resource: '*'
         - type: AWS_LAMBDA
-          name: purchases
+          name: dateTime
           config:
-            functionName: getUserPurchasesHandler
+            functionName: getUserPurchasesDateTimeHandler
             iamRoleStatements:
               - Effect: 'Allow'
                 Action:
@@ -70,13 +70,12 @@ custom:
           response: false
           dataSource: getUser
           field: getUser
-        - type: User
+        - type: Product
           request: false
           response: false
-          dataSource: purchases
-          field: purchases
+          dataSource: dateTime
+          field: dateTime
         
-
     - name: ${self:provider.stackName}-product
       schema: subgraph-product/schema/product.graphql
       authenticationType: API_KEY
@@ -93,7 +92,21 @@ custom:
                 Action:
                   - '*'
                 Resource: '*'
+        - type: AWS_LAMBDA
+          name: getPurchases
+          config:
+            functionName: getPurchasesHandler
+            iamRoleStatements:
+              - Effect: 'Allow'
+                Action:
+                  - '*'
+                Resource: '*'
       mappingTemplates:
+        - type: User
+          request: subgraph-user/resources/getPurchases.vtl
+          response: false
+          dataSource: getPurchases
+          field: purchases
         - type: Query
           request: false
           response: false

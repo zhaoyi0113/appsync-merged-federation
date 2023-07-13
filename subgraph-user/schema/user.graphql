@@ -5,11 +5,4 @@ type Query {
 type User {
   id: ID!
   name: String!
-  purchases: [Product]
-}
-
-type Product {
-  id: String!
-  name: String!
-  dateTime: AWSDateTime
 }
