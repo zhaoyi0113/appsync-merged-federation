@@ -15,6 +15,7 @@ provider:
   region: ${opt:region}
   stackName: ${self:service}
   stage: ${opt:stage}
+  timeout: 30
   tags:
     COMPONENT_NAME: bff
     PART_NAME: api
@@ -55,26 +56,12 @@ custom:
                 Action:
                   - '*'
                 Resource: '*'
-        - type: AWS_LAMBDA
-          name: dateTime
-          config:
-            functionName: getUserPurchasesDateTimeHandler
-            iamRoleStatements:
-              - Effect: 'Allow'
-                Action:
-                  - '*'
-                Resource: '*'
       mappingTemplates:
         - type: Query
           request: false
           response: false
           dataSource: getUser
           field: getUser
-        - type: Product
-          request: false
-          response: false
-          dataSource: dateTime
-          field: dateTime
         
     - name: ${self:provider.stackName}-product
       schema: subgraph-product/schema/product.graphql
@@ -101,6 +88,16 @@ custom:
                 Action:
                   - '*'
                 Resource: '*'
+        - type: AWS_LAMBDA
+          name: publishProductUpdatedEvent
+          config:
+            functionName: publishProductUpdatedEventHandler
+            iamRoleStatements:
+              - Effect: 'Allow'
+                Action:
+                  - '*'
+                Resource: '*'
+
       mappingTemplates:
         - type: User
           request: subgraph-user/resources/getPurchases.vtl
@@ -112,6 +109,11 @@ custom:
           response: false
           dataSource: getProduct
           field: getProduct
+        - type: Mutation
+          request: false
+          response: false
+          dataSource: publishProductUpdatedEvent
+          field: publishProductUpdatedEvent
 
 functions:
   - ${file(subgraph-user/resources/lambdas.yml)}

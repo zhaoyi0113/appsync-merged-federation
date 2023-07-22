@@ -2,6 +2,14 @@ type Query {
   getProduct(id: String!): Product
 }
 
+type Subscription {
+  onProduct(userId: String!): Product
+    @aws_subscribe(mutations: ["publishProductUpdatedEvent"])
+}
+type Mutation {
+  publishProductUpdatedEvent(userId: String!, productId: String!): Product!
+}
+
 type Product {
   id: String!
   name: String!

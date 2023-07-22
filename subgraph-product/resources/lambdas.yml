@@ -1,11 +1,14 @@
 getProductHandler:
   handler: subgraph-product/src/index.getProduct
   name: ${self:provider.stackName}-getProduct
-  timeout: 30
   tracing: true
 
 getPurchasesHandler:
   handler: subgraph-product/src/index.getPurchases
   name: ${self:provider.stackName}-getPurchases
-  timeout: 30
+  tracing: true
+
+publishProductUpdatedEventHandler:
+  handler: subgraph-product/src/index.publishProductUpdatedEvent
+  name: ${self:provider.stackName}-publishProductUpdatedEvent
   tracing: true

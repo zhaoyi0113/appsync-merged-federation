@@ -7,3 +7,8 @@ export const getPurchases = async (event: any) => {
   console.log('get purchases', event);
   return [{ id: 'prod-001', name: 'product-001', inStock: true }];
 };
+
+export const publishProductUpdatedEvent = async (event: any) => {
+  console.log('publishProductUpdatedEvent', event);
+  return [{ id: 'prod-001', name: 'product-001', inStock: true }];
+}
